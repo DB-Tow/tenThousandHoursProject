@@ -1,0 +1,7 @@
+# .gitignore tenThousandHoursProject [Created by DBTow]
+
+# Database Files
+*.db
+
+# Mac OS
+.DS_store
