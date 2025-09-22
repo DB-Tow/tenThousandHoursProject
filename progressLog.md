@@ -19,4 +19,22 @@
         -Also added a separate print message that checks if argv[1] == "log" to represent the log command
         -This is how we will receive and process user input
 
+-Reviewed C/SQLITE API documentation and watched some youtube videos on the topic.
+
+-In src/ created a database.c
+    -Inside this file created a function db_init() that opens a database at the defined path ./database/ or creates if it does not exist.
+    -Then after the initial database file has been created or opened a SQL table is created and inserted (if it doesn't exist)
+
+Our schema is a table named time_entries that has an id / seconds / category / description.
+    -The id will be the primary key identifier
+    -Seconds will be the total amount of time in seconds that was spent on an activity to be logged.
+    -Category will be a text option for what field of discpline the time should be logged to.
+    -Description will be a series of comments describing what the logged time was spent on.
+
+The SQL table is inserted using the sqlite3_exec() interface. If all these operations were performed successfully it closes the database and returns 0.
+
+-Created a database.h header that makes the db_init() function globablly available. Also updated the makefile to add the ./include directory to header search path.
+
+-In main.c after linking the header file I called the function db_init() and upon success it will print a message to the user that the database was successfully initialized.
+
 
