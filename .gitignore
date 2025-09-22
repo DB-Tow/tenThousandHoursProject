@@ -5,3 +5,6 @@
 
 # Mac OS
 .DS_store
+
+# Compiled Executable
+tthp
