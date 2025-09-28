@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "database.h"
+#include "parser.h"
 
 int main(int argc, char *argv[])
 {
@@ -24,6 +25,8 @@ int main(int argc, char *argv[])
 		printf("Argv[%d]: %s\n", i, argv[i]);
 	if (strcmp(argv[1], commands[0]) == 0) {
 		printf("Log command recognized\n");
+		int result = parse_time(argv[2]);
+		printf("Parsed %d seconds from '%s'\n", result, argv[2]);
 	}
 
 	return 0;
