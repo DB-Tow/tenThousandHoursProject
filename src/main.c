@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 
 	int i;
 	char *commands[] = { "log" };
-	
+
 	printf("Number of arguments: %d\n", argc);
 	for (i = 0; i < argc; i++)
 		printf("Argv[%d]: %s\n", i, argv[i]);
@@ -27,7 +27,19 @@ int main(int argc, char *argv[])
 		printf("Log command recognized\n");
 		int result = parse_time(argv[2]);
 		printf("Parsed %d seconds from '%s'\n", result, argv[2]);
-	}
 
+		char *category = argv[3];
+		printf("The category you have selected is: %s\n", category);
+
+		// Build description string
+		char description[256];
+		description[0] = '\0';
+
+		for (i = 4; i < argc; i++) {
+			strcat(description, argv[i]);
+			strcat(description, "\n");
+	}
+		printf("Description: %s\n", description);
+	}
 	return 0;
 }
