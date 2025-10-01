@@ -74,5 +74,3 @@ I think I need to change my data heirarchy scheme a little:
 -Second I want to add the ability to log current or retroactive dates to time_logs (completely overlooked this important aspect)
 
 Having a date attached to time log entries will be essential for time querying operations I imagine. Especially when I begin working on building reporting features for the program.
-
-
