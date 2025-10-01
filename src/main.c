@@ -5,6 +5,7 @@
 
 #include "database.h"
 #include "parser.h"
+#include "utilities.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,7 +29,13 @@ int main(int argc, char *argv[])
 
 	if (strcmp(argv[1], commands[0]) == 0) {
 		printf("Log command recognized\n");
+
+		for (i = 2; i < argc; i++) {
+			check_for_date(argv[i]);
+		}
+
 		int seconds_duration = parse_time(argv[2]);
+
 		printf("Parsed %d seconds from '%s'\n", seconds_duration, argv[2]);
 
 		char *category = argv[3];
