@@ -56,69 +56,72 @@ int parse_time(const char *time_str) {
 bool valid_date(int year, int month, int day) {
 	// Check year range
 	// Acceptable years are from 2025 to 2100
-	if (year <= 2025 || year > 2100) return false;
+	if (year < 2025 || year > 2100) return false;
 
 	// Check month range (1 - 12)
 	if (month < 1 || month > 12) return false;
 
-	// First day check
-	if (day < 1 || day > 31) return false;
-
 	// Days per month array (non-leap years)
-	// Starting from January at 31 days
+	// days_per_month[0] = January at 31 days
 	int days_per_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 	// Adjust February days per month if it is a leap year
-	if (month == 2) {
-		bool is_leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-		if (is_leap) {
-			days_in_month[1] = 29;
-		}
+	if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+		days_per_month[1] = 29;
 	}
 
-	// Advanced day check
-	if (day > days_in_month[month - 1]) return false;
+	// Check the day range (checks per month) 
+	if (day < 1 || day > days_per_month[month - 1]) return false;
 	
 	return true;
 }
 
-int parse_date(const char *date_str, char *output); {
+int parse_date(const char *date_str, char *output) {
 	if (!date_str || *date_str == '\0') return -1;
 
 	int month, day, year;
+	int first, second, third;
 	
-	// Check format MM/DD/YYYY
-	if (sscanf(date_str, "%d/%d/%d", &month, &day, &year) == 3) {
-		if (valid_date(year, month, day)) {
-			sprintf(output, "%04d-%02d-%02d", year, month, day);
-			return 0;
+	// Check format MM/DD/YYYY or YYYY/MM/DD (slash separator)
+	if (sscanf(date_str, "%d/%d/%d", &first, &second, &third) == 3) {
+
+		// Determine format based on the first number
+		if (first > 31) {
+			// Indicates YYYY/MM/DD format
+			year = first;
+			month = second;
+			day = third;
+		} else {
+			// Indicates MM/DD/YYYY format
+			month = first;
+			day = second;
+			year = third;
 		}
-	}
-	
-	// Check format YYYY/MM/DD
-	if (sscanf(date_str, "%d/%d/%d", &year, &month, &day) == 3) {
-		if (valid_date(year, month, day)) {
-			sprintf(output, "%04d-%02d-%02d", year, month, day);
-			return 0;
-		}
-	}
-	
-	// Check format MM-DD-YYYY
-	if (sscanf(date_str, "%d-%d-%d", &month, &day, &year) == 3) {
+
 		if (valid_date(year, month, day)) {
 			sprintf(output, "%04d-%02d-%02d", year, month, day);
 			return 0;
 		}
 	}
 
-	// Check format YYYY-MM-DD
-	if (sscanf(date_str, "%d-%d-%d", &year, &month, &day) == 3) {
+	//Check format MM-DD-YYYY or YYYY-MM-DD (dash separator)
+	if (sscanf(date_str, "%d-%d-%d", &first, &second, &third) == 3) {
+		if (first > 31) {
+			year = first;
+			month = second;
+			day = third;
+		} else {
+			month = first;
+			day = second;
+			year = third;
+		}
+
 		if (valid_date(year, month, day)) {
 			sprintf(output, "%04d-%02d-%02d", year, month, day);
 			return 0;
 		}
 	}
-
+	
 	// No valid date format was found
 	return -1;
 }
