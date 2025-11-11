@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include <string.h>
 
+#include "parser.h"
 #include "utilities.h" // header for get_todays_date function
 
 int parse_time(const char *time_str) {
@@ -142,7 +143,7 @@ TimeEntry parse_log_arguments(int argc, char **argv) {
 
 	// Loop through all user given arguments
 	// Excludes argv[0] (which is the program name) and argv[1] (which will always be a user command like "log")
-	for (i = 2, i < argc; i++) {
+	for (int i = 2; i < argc; i++) {
 		
 		// Checking for a valid time duration
 		int valid_time = parse_time(argv[i]);
