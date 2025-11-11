@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <string.h>
 
 int parse_time(const char *time_str) {
 	if (!time_str || *time_str == '\0') return -1;
@@ -124,4 +125,56 @@ int parse_date(const char *date_str, char *output) {
 	
 	// No valid date format was found
 	return -1;
+}
+
+TimeEntry parse_log_arguments(int argc, char **argv) {
+	TimeEntry entry;
+
+	// Initialize the struct with "empty" values
+	entry.seconds = -1;
+	entry.date[0] = '\0';
+	entry.category[0] = '\0';
+	entry.comment_count = 0;
+
+	bool found_category = false;
+
+	// Loop through all user given arguments
+	// Excludes argv[0] (which is the program name) and argv[1] (which will always be a user command like "log")
+	for (i = 2, i < argc; i++) {
+		
+		// Checking for a valid time duration
+		int valid_time = parse_time(argv[i]);
+		if (valid_time > 0) {
+			entry.seconds = valid_time;
+			continue; // Move to the next argument
+		}
+
+		// Checking for a valid date format
+		char date_buffer[11];
+		if (parse_date(argv[i], date_buffer) == 0) {
+			strcpy(entry.date, date_buffer);
+			continue;
+		}
+
+		// Check for category (category = first non duration or date argument)
+		if (!found_category) {
+			strncpy(entry.category, argv[i], sizeof(entry.category) - 1);
+			entry.category[sizeof(entry.category) - 1] = '\0'; // Null terminating the string
+			found_category = true;
+		} else {
+			if (entry.comment_count < 10) {
+				entry.comments[entry.comment_count++] = argv[i];
+			} else {
+				fprintf(stderr, "Error: Maximum comment count is 10");
+			}
+		}
+	}
+
+	// If no date is given use the default date
+	if (entry.date[0] == '\0') {
+		// get_current_date() function
+	}
+
+	return entry;
+
 }
