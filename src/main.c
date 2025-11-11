@@ -4,8 +4,7 @@
 #include <string.h>
 
 #include "database.h"
-#include "parser.h"
-#include "utilities.h"
+#include "commands.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,38 +17,18 @@ int main(int argc, char *argv[])
 
 	printf("Welcome to the TTHP time logging program\n\n");
 
+	// Initialize the database
 	if (db_init() != 0) {
 		fprintf(stderr, "Database initialization failed!\n");
 		return 1;
 	}
 	printf("Database initialized successfully.\n\n");
+	
+	// Parse the user command from argv[1]
+	Command cmd = parse_command(argv[1]);
 
-	int i;
-	char *commands[] = { "log" };
+	// Execute the command
+	int result = execute_command(cmd, argc, argv);
 
-	if (strcmp(argv[1], commands[0]) == 0) {
-		printf("Log command recognized\n");
-
-		for (i = 2; i < argc; i++) {
-			check_for_date(argv[i]);
-		}
-
-		int seconds_duration = parse_time(argv[2]);
-
-		printf("Parsed %d seconds from '%s'\n", seconds_duration, argv[2]);
-
-		char *category = argv[3];
-		printf("The category you have selected is: %s\n", category);
-
-		// Build description string
-		char description[256];
-		description[0] = '\0';
-
-		for (i = 4; i < argc; i++) {
-			strcat(description, argv[i]);
-			strcat(description, "\n");
-	}
-		printf("Description: %s\n", description);
-	}
-	return 0;
+	return result;
 }
