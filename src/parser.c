@@ -5,6 +5,8 @@
 #include <ctype.h>
 #include <string.h>
 
+#include "utilities.h" // header for get_todays_date function
+
 int parse_time(const char *time_str) {
 	if (!time_str || *time_str == '\0') return -1;
 
@@ -170,11 +172,10 @@ TimeEntry parse_log_arguments(int argc, char **argv) {
 		}
 	}
 
-	// If no date is given use the default date
+	// If no date is given default behavior is use the current date 
 	if (entry.date[0] == '\0') {
-		// get_current_date() function
+		get_todays_date(entry.date); // Function that grabs the current date [from utilities.c]
 	}
 
 	return entry;
-
 }
