@@ -106,6 +106,7 @@ int parse_date(const char *date_str, char *output) {
 			sprintf(output, "%04d-%02d-%02d", year, month, day);
 			return 0;
 		}
+		return -2; // Date format recognized but an invalid date was given
 	}
 
 	//Check format MM-DD-YYYY or YYYY-MM-DD (dash separator)
@@ -124,6 +125,7 @@ int parse_date(const char *date_str, char *output) {
 			sprintf(output, "%04d-%02d-%02d", year, month, day);
 			return 0;
 		}
+		return -2; 
 	}
 	
 	// No valid date format was found
@@ -154,9 +156,15 @@ TimeEntry parse_log_arguments(int argc, char **argv) {
 
 		// Checking for a valid date format
 		char date_buffer[11];
-		if (parse_date(argv[i], date_buffer) == 0) {
+		int date_result = parse_date(argv[i], date_buffer);
+		if (date_result == 0) {
 			strcpy(entry.date, date_buffer);
 			continue;
+		} else if (date_result == -2) {
+			// Date format was recognized but an invalid date was given
+			fprintf(stderr, "Error: Date format recognized but invalid date given '%s'. Please use a valid date between 2025-2100.\n", argv[i]);
+			entry.seconds = -1; // Mark entry as invalid
+			return entry;
 		}
 
 		// Check for category (category = first non duration or date argument)
