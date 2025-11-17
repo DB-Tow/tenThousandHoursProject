@@ -18,9 +18,9 @@ typedef struct {
 
 // Function declarations
 
-int timer_read_state(TimerState *state);
+bool timer_read_state(TimerState *state);
 
-int timer_write_state(const TimerState *state);
+bool timer_write_state(const TimerState *state);
 
 bool timer_clear_state();
 

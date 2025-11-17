@@ -8,3 +8,6 @@
 
 # Compiled Executable
 tthp
+
+# Ignore stopwatch state file
+data/timer_state
