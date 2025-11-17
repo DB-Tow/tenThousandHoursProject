@@ -1,5 +1,0 @@
-state=running
-start_time=1700000000
-accumulated_time=4000
-pid=99999
-tmux_session=test_write_session
