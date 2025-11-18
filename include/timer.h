@@ -6,8 +6,6 @@
 #include <time.h>
 #include <stdbool.h> 
 
-// Path to the timer state file
-#define TIMER_STATE_PATH "/data/timer_state"
 
 // Timer state struct
 typedef struct {

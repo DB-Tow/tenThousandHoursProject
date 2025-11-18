@@ -6,9 +6,13 @@
 #include <unistd.h>
 
 #include "timer.h"
+#include "paths.h"
 
 bool timer_read_state(TimerState *state) {
-	FILE *fp = fopen(TIMER_STATE_PATH, "r");
+	// Build the path to the /data/timer_state file
+	const char *timer_state_path = paths_get_timer_state();
+
+	FILE *fp = fopen(timer_state_path, "r");
 	if (!fp) {
 		return false; // File doesn't exist
 	}
@@ -26,11 +30,12 @@ bool timer_read_state(TimerState *state) {
 	state->accumulated_time = (int)accumulated;
 
 	return true;
-
 }
 
 bool timer_write_state(const TimerState *state) {
-	FILE *fp = fopen(TIMER_STATE_PATH, "w");
+	const char *timer_state_path = paths_get_timer_state();
+
+	FILE *fp = fopen(timer_state_path, "w");
 	if (!fp) {
 		return false;
 	}
@@ -47,7 +52,11 @@ bool timer_write_state(const TimerState *state) {
 }
 
 bool timer_clear_state() {
-	return unlink(TIMER_STATE_PATH) == 0;
+	const char *timer_state_path = paths_get_timer_state();
+	if (!timer_state_path) {
+		return false;
+	}
+	return unlink(timer_state_path) == 0;
 }
 
 int get_elapsed_time(const TimerState *state, char *buf, size_t len) {
