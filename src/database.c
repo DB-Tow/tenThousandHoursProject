@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <sqlite3.h>
 
-#define DB_PATH "./database/tthp.db"
+#define DB_PATH "/database/tthp.db"
 
 int db_init(void);
 

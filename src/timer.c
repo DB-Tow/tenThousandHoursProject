@@ -3,10 +3,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "timer.h"
 
-int timer_read_state(TimerState *state) {
+bool timer_read_state(TimerState *state) {
 	FILE *fp = fopen(TIMER_STATE_PATH, "r");
 	if (!fp) {
 		return false; // File doesn't exist
@@ -15,7 +16,7 @@ int timer_read_state(TimerState *state) {
 	int running;
 	long start, accumulated;
 
-	int n = fscanf(f, "%d %ld %ld", &running, &start, &accumulated);
+	int n = fscanf(fp, "%d %ld %ld", &running, &start, &accumulated);
 	fclose(fp);
 
 	if (n != 3) return false;
@@ -34,7 +35,7 @@ bool timer_write_state(const TimerState *state) {
 		return false;
 	}
 
-	fprintf(f, "%d %ld %d\n",
+	fprintf(fp, "%d %ld %d\n",
 			state->is_running ? 1 : 0,
 			(long)state->start_time,
 			state->accumulated_time
@@ -61,5 +62,5 @@ int get_elapsed_time(const TimerState *state, char *buf, size_t len) {
 	int minutes = (total % 3600) / 60;
 	int seconds = total % 60;
 
-	return snprintf(buf, len, "%02d:%02d:%02d", h, m, s);
+	return snprintf(buf, len, "%02d:%02d:%02d", hours, minutes, seconds);
 }

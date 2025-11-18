@@ -7,6 +7,7 @@ typedef enum {
 	CMD_NONE, // No command or invalid command
 	CMD_LOG, // Command used to log time entries
 	CMD_VIEW, // Command used to view time entry details
+	CMD_TIMER, // Command used to interact with the timer functionality
 } Command;
 
 // Parse the user command from agrv[1]
@@ -19,6 +20,9 @@ int execute_command(Command cmd, int argc, char **argv);
 // Command handler function
 // The function ran if the program executes the "log" command
 int cmd_log(int argc, char **argv);
+
+// The function ran if the program executes the "timer command
+int cmd_timer(int argc, char **argv);
 
 // The function ran if the program executes the "view" command
 int cmd_view(int argc, char ** argv);
