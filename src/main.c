@@ -5,6 +5,7 @@
 
 #include "database.h"
 #include "commands.h"
+#include "paths.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,6 +13,12 @@ int main(int argc, char *argv[])
 	// Will eventually have a user menu if no arguments are given
 	if (argc < 2) {
 		printf("Please enter required arguments\n");
+		return 1;
+	}
+
+	// Initialize paths first
+	if (paths_init() != 0) {
+		fprintf(stderr, "Error: Could not determine program location\n");
 		return 1;
 	}
 

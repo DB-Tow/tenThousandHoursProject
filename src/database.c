@@ -3,15 +3,19 @@
 #include <stdio.h>
 #include <sqlite3.h>
 
-#define DB_PATH "/database/tthp.db"
+#include "paths.h"
+
 
 int db_init(void);
 
 int db_init() {
+	// Build the database path
+	const char *db_path = paths_get_db();
+
 	sqlite3 *db;
 	char *err_msg = 0;
 
-	int rc = sqlite3_open(DB_PATH, &db);
+	int rc = sqlite3_open(db_path, &db);
 	
 	if (rc != SQLITE_OK) {
 		fprintf(stderr, "Cannot open database %s\n", sqlite3_errmsg(db));
