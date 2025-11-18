@@ -15,14 +15,14 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	printf("Welcome to the TTHP time logging program\n\n");
+	// printf("Welcome to the TTHP time logging program\n\n");
 
 	// Initialize the database
 	if (db_init() != 0) {
 		fprintf(stderr, "Database initialization failed!\n");
 		return 1;
 	}
-	printf("Database initialized successfully.\n\n");
+	// printf("Database initialized successfully.\n\n");
 	
 	// Parse the user command from argv[1]
 	Command cmd = parse_command(argv[1]);

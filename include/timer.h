@@ -7,13 +7,13 @@
 #include <stdbool.h> 
 
 // Path to the timer state file
-#define TIMER_STATE_PATH "data/timer_state"
+#define TIMER_STATE_PATH "/data/timer_state"
 
 // Timer state struct
 typedef struct {
 	bool is_running; 		// 1 = running and 0 = not running
 	time_t start_time; 		// A Unix timestamp of when the timer was last started
-	int accumulated_time; 		// The amount of accumulated time counted 
+	int accumulated_time; 		// The amount of accumulated time counted
 } TimerState;
 
 // Function declarations
