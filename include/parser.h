@@ -9,6 +9,7 @@ typedef struct {
 	int seconds;
 	char date[11];
 	char category[256];
+	char project[256];
 	char *comments[10];
 	int comment_count;
 } TimeEntry;

@@ -138,6 +138,7 @@ TimeEntry parse_log_arguments(int argc, char **argv) {
 	// Initialize the struct with "empty" values
 	entry.seconds = -1;
 	entry.date[0] = '\0';
+	entry.project[0] = '\0';
 	entry.category[0] = '\0';
 	entry.comment_count = 0;
 
@@ -146,6 +147,25 @@ TimeEntry parse_log_arguments(int argc, char **argv) {
 	// Loop through all user given arguments
 	// Excludes argv[0] (which is the program name) and argv[1] (which will always be a user command like "log")
 	for (int i = 2; i < argc; i++) {
+
+		// Check for project flag
+		if ((strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--project") == 0)) {
+			// If the flag exists... make sure there is an argument following for the project name
+			if (i + 1 < argc) {
+				// Copy the project name
+				strncpy(entry.project, argv[i + 1], sizeof(entry.project) - 1);
+				// Add a null terminating character
+				entry.project[sizeof(entry.project) - 1] = '\0';
+				// Skip the next argument (project name)
+				i++;
+				continue;
+			} else {
+				fprintf(stderr, "Error: The project flag (-p / --project) requires a project name\n");
+				// Mark entry as invalid an exit the program
+				entry.seconds = -1;
+				return entry;
+			}
+		}
 		
 		// Checking for a valid time duration
 		int valid_time = parse_time(argv[i]);
