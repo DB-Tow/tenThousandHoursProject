@@ -69,6 +69,13 @@ int cmd_log(int argc, char **argv) {
 	printf("Category received: %s\n", entry.category);
 	printf("Date used: %s\n", entry.date);
 
+	// Print project if given
+	if (entry.project[0] != '\0') {
+		printf("Project received: %s\n", entry.project);
+	} else {
+		printf("Project received: NONE\n");
+	}
+
 	if (entry.comment_count > 0) {
 		printf(" Comment number: (%d)\n", entry.comment_count);
 		for (int i = 0; i < entry.comment_count; i++) {
